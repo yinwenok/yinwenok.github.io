@@ -1,11 +1,11 @@
 # Bing 收录排查
 
-检查日期：2026-10-24。站点：https://yinwen2019.github.io/
+检查日期：2026-10-24。站点：https://yinwenok.github.io/
 
 ## 线上检查结果
 
 - 首页、`/robots.txt` 和 `/sitemap.xml` 均返回 HTTP 200。
-- 首页规范地址为 `https://yinwen2019.github.io/`。
+- 首页规范地址为 `https://yinwenok.github.io/`。
 - 首页未设置禁止收录的 robots 标签，响应头也未发现 X-Robots-Tag。
 - robots.txt 提供了 sitemap 地址，没有禁止 Bingbot 抓取的规则。
 - 首页已有 `msvalidate.01` 验证标签。这只说明部署了一个验证字符串，无法证明当前 Bing 账号已经验证成功或页面已经收录。
@@ -25,10 +25,10 @@
 
 ## 必须在 Bing 站长工具确认的事项
 
-1. 登录 [Bing Webmaster Tools](https://www.bing.com/webmasters/)，选择或添加 `https://yinwen2019.github.io/`。如果已经在 Google Search Console 验证过这个站点，可以选择从那里导入；Google 能搜到网站本身不代表已完成 Search Console 验证。
+1. 登录 [Bing Webmaster Tools](https://www.bing.com/webmasters/)，选择或添加 `https://yinwenok.github.io/`。如果已经在 Google Search Console 验证过这个站点，可以选择从那里导入；Google 能搜到网站本身不代表已完成 Search Console 验证。
 2. 核对站点所有权验证状态。如果 Bing 要求的新 meta 验证值与 `_config.yml` 的 `bing_site_verification` 不同，使用当前账号提供的值，部署后再次验证。GitHub Pages 子域名适合使用 meta 标签或验证文件，不需要操作 github.io 的 DNS。
 3. 在 URL Inspection 中检查首页，并运行 Live URL 测试。记录索引状态、上次抓取时间以及具体错误。它能区分未发现、抓取失败、已抓取未收录和已收录等情况。
-4. 本地修复发布后，在 Sitemaps 中提交 `https://yinwen2019.github.io/sitemap.xml`，并为首页请求索引。
+4. 本地修复发布后，在 Sitemaps 中提交 `https://yinwenok.github.io/sitemap.xml`，并为首页请求索引。
 5. 站长工具若显示已收录，但搜索姓名仍找不到，继续检查 Search Performance 中的查询词与展现情况；这时应按排名和查询匹配问题处理。
 6. 可以先观察一到两周。此时间只是复查窗口，不是 Bing 的收录承诺。若持续未收录且 Live URL 抓取正常，根据站长工具给出的原因修复，必要时通过其支持渠道提交首页地址和诊断结果。无需每日反复提交同一 URL。
 

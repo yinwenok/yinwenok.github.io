@@ -11,10 +11,10 @@
   venue: "AAAI 2026"
   year: 2026
   topic: "Multimodal Emotion Recognition"
-  url: "https://github.com/yinwen2019/TiCAL"
+  url: "https://github.com/yinwenok/TiCAL"
   links:
     - label: "Code"
-      url: "https://github.com/yinwen2019/TiCAL"
+      url: "https://github.com/yinwenok/TiCAL"
   selected: true
   selected_order: 1
   image: "/images/paper/TiCAL.png"
@@ -32,10 +32,10 @@
   year: 2025
   topic: "Visual Emotion Recognition"
   topic_abbreviation: "VER"
-  url: "https://yinwen2019.github.io/ucdver/"
+  url: "https://yinwenok.github.io/ucdver/"
   links:
     - label: "Project"
-      url: "https://yinwen2019.github.io/ucdver/"
+      url: "https://yinwenok.github.io/ucdver/"
   selected: true
   selected_order: 2
   image: "/images/paper/kcdp.png"

@@ -1,7 +1,7 @@
 <section class="research-intro" aria-labelledby="research-heading" markdown="1">
 <h2 id="research-heading">Understanding emotion. Exploring empathetic interaction.</h2>
 
-My research interests span **affective computing** and **unified multimodal understanding and generation**. I am currently exploring **empathetic generation and interaction**. I have published **15+ papers**. <a class="citation-badge" href='https://scholar.google.com/citations?user=UwkfZLkAAAAJ&hl=zh-CN'><img alt="Google Scholar citations" width="105" height="20" src="https://img.shields.io/endpoint?logo=Google%20Scholar&url=https%3A%2F%2Fraw.githubusercontent.com%2Fyinwen2019%2Fyinwen2019.github.io%2Fgoogle-scholar-stats%2Fgs_data_shieldsio.json&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>
+My research interests span **affective computing** and **unified multimodal understanding and generation**. I am currently exploring **empathetic generation and interaction**. I have published **15+ papers**. <a class="citation-badge" href='https://scholar.google.com/citations?user=UwkfZLkAAAAJ&hl=zh-CN'><img alt="Google Scholar citations" width="105" height="20" src="https://img.shields.io/endpoint?logo=Google%20Scholar&url=https%3A%2F%2Fraw.githubusercontent.com%2Fyinwenok%2Fyinwenok.github.io%2Fgoogle-scholar-stats%2Fgs_data_shieldsio.json&labelColor=f6f6f6&color=9cf&style=flat&label=citations"></a>
 
 </section>
 

@@ -1,0 +1,80 @@
+{%- comment -%}
+  Visitor map + cumulative pageview total for the profile rail.
+  - The map is the MapMyVisitors widget; its 30-day counter and date labels
+    are always hidden. Only the separately fetched cumulative total is shown.
+  - The total comes from the `visitor-stats` branch, refreshed by
+    .github/workflows/visitor-total.yml from the public MapMyVisitors stats page.
+  - Both scripts are deferred: the total is a ~100-byte JSON, the map widget
+    (jQuery + jVectorMap) is injected once the browser is idle.
+{%- endcomment -%}
+{%- assign vm = site.visitor_map -%}
+{%- if vm.enabled and vm.key and vm.key != "" -%}
+{%- assign vm_ocean = vm.ocean_color | default: "edf3f9" -%}
+{%- assign vm_land = vm.land_color | default: "245b87" -%}
+{%- assign vm_text = vm.text_color | default: "245b87" -%}
+{%- assign vm_stats = vm.stats_url | default: "https://mapmyvisitors.com/web/1c9ow" -%}
+{%- assign vm_total_src = vm.total_json -%}
+{%- if vm_total_src == nil or vm_total_src == "" -%}
+  {%- capture vm_total_src %}https://raw.githubusercontent.com/{{ site.repository }}/visitor-stats/visitor_total.json{% endcapture -%}
+{%- endif -%}
+<div class="profile-card__visitors" role="group" aria-label="Visitor map and total pageviews"
+     style="--vm-ocean: #{{ vm_ocean }}" data-visitor-group data-total-src="{{ vm_total_src | strip }}">
+  <a class="visitor-map__total" href="{{ vm_stats }}" target="_blank" rel="noopener noreferrer"
+     data-visitor-total title="View total pageviews on MapMyVisitors">
+    <span class="visitor-map__count" data-visitor-count hidden></span>
+    <span class="visitor-map__label">Total Pageviews</span>
+    <svg class="visitor-map__external" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M5 3h8v8M13 3 3 13"/></svg>
+  </a>
+  <div class="visitor-map" data-visitor-map
+       data-widget-src="https://mapmyvisitors.com/map.js?d={{ vm.key | uri_escape }}&amp;cl={{ vm_land }}&amp;co={{ vm_ocean }}&amp;ct={{ vm_text }}&amp;w=a"></div>
+</div>
+<script>
+  (function () {
+    var group = document.querySelector("[data-visitor-group]");
+    if (!group) return;
+    var mount = group.querySelector("[data-visitor-map]");
+    var totalEl = group.querySelector("[data-visitor-total]");
+
+    // Show only a valid cumulative total. While unavailable, the visible
+    // Total Pageviews link still opens the public stats page; never substitute
+    // the widget's 30-day count or a fabricated zero.
+    if (totalEl && window.fetch) {
+      fetch(group.getAttribute("data-total-src"), { cache: "no-store", credentials: "omit" })
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+        .then(function (data) {
+          var n = data && data.total_pageviews;
+          if (typeof n !== "number" || !isFinite(n) || n < 0) return;
+          totalEl.querySelector("[data-visitor-count]").textContent = n.toLocaleString("en-US");
+          totalEl.querySelector("[data-visitor-count]").hidden = false;
+        })
+        .catch(function () { /* leave the public Total Pageviews link available */ });
+    }
+
+    // The provider's hidden counter used to supply this link's accessible name.
+    var mapLabel = new MutationObserver(function () {
+      var link = mount.querySelector("#mapmyvisitors-widget");
+      if (!link) return;
+      link.setAttribute("aria-label", "Open visitor map statistics");
+      mapLabel.disconnect();
+    });
+    mapLabel.observe(mount, { childList: true, subtree: true });
+
+    var loaded = false;
+    function loadMap() {
+      if (loaded) return;
+      loaded = true;
+      var s = document.createElement("script");
+      s.id = "mapmyvisitors";       // the widget locates its host by this id
+      s.async = true;
+      s.src = mount.getAttribute("data-widget-src");
+      mount.appendChild(s);
+    }
+    // Never let the third-party widget compete with the page's own scripts.
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(loadMap, { timeout: 2500 });
+    } else {
+      window.addEventListener("load", loadMap, { once: true });
+    }
+  })();
+</script>
+{%- endif -%}

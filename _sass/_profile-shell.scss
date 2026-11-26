@@ -169,6 +169,14 @@
   background: var(--profile-rail);
   font-family: var(--profile-display);
   color: var(--profile-ink);
+  // The rail can grow with the visitor map; scroll it instead of clipping.
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #b9cbd9 transparent;
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-thumb { background: #b9cbd9; border-radius: 6px; }
 
   &__portrait {
     display: block;
@@ -211,6 +219,76 @@
     }
   }
   i { flex: 0 0 16px; width: 16px; text-align: center; font-size: 15px; }
+
+  &__visitors {
+    width: 100%;
+    max-width: 208px;
+    margin: 20px auto 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--profile-rule);
+  }
+}
+
+.visitor-map__total {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 56px;
+  padding: 9px 26px;
+  border-radius: 8px 8px 0 0;
+  // The rail's own background shows through; no separate card surface.
+  background: transparent;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+
+.visitor-map__count {
+  max-width: 100%;
+  font-size: 20px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
+}
+
+.visitor-map__label {
+  color: var(--profile-muted);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.015em;
+}
+
+.visitor-map__external {
+  position: absolute;
+  top: 13px;
+  right: 10px;
+  opacity: 0.7;
+}
+
+.profile-card__visitors .visitor-map__total {
+  color: var(--profile-link);
+  &:hover { color: #17405f; text-decoration: none; }
+  &:focus:not(:focus-visible) { outline: none; }
+}
+
+.visitor-map {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 2.04;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 0 0 8px 8px;
+  background: var(--vm-ocean, var(--profile-rail));
+  // Specificity keeps the widget's injected stylesheet from undoing the shell.
+  a#mapmyvisitors-widget { min-height: 0; margin: 0 auto; border-radius: inherit; }
+  .mapmyvisitors-map-container { border-radius: inherit; }
+  // Never mix the provider's rolling 30-day statistics with the total.
+  .mapmyvisitors-visitors, .mapmyvisitors-date { display: none; }
 }
 
 .profile-shell .page-viewport:has(> .page--home) { padding-top: 20px; }
@@ -340,6 +418,8 @@
   .profile-card__research { font-size: 12px; margin: 20px 0 16px; }
   .profile-card__location { font-size: 11px; gap: 6px; }
   .profile-card__links a { gap: 7px; font-size: 12px; }
+  // The rail is too narrow for the map to stay legible.
+  .profile-card__visitors { display: none; }
   .profile-shell .page-viewport { padding: 24px 20px 0; }
   .profile-shell .page--home {
     .research-intro { padding: 16px 18px; }
@@ -411,6 +491,7 @@
   .profile-card__location { grid-column: 1 / -1; margin: 6px 0 2px; font-size: 11px; line-height: 1.4; }
   .profile-card__links { grid-column: 1 / -1; }
   .profile-card__links a { min-height: 44px; padding-block: 5px; font-size: 12px; }
+  .profile-card__visitors { display: none; }
 }
 
 @media print {

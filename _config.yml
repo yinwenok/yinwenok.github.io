@@ -7,14 +7,31 @@
 
 # Site Settings
 title                    : "Wen Yin (殷文)"
-url                      : "https://yinwen2019.github.io"
+url                      : "https://yinwenok.github.io"
 baseurl                  : ""
 description              : "PhD student at UESTC and research intern at Tongji University. Researching affective computing, multimodal understanding and generation, and empathetic human–AI interaction."
-repository               : "yinwen2019/yinwen2019.github.io"
+repository               : "yinwenok/yinwenok.github.io"
 google_scholar_stats_use_cdn : true
 
 # google analytics
 google_analytics_id      : G-SWFCX99KQZ
+
+# visitor map (MapMyVisitors widget, bottom of the profile rail)
+# The widget snippet is <script id="mapmyvisitors"
+#   src="//mapmyvisitors.com/map.js?d=<key>&cl=ffffff&w=a"></script>; paste only
+# the d= value below. Leave `key` empty to switch the whole block off.
+# `stats_url` is the public stats page; .github/workflows/visitor-total.yml
+# reads its "Total Pageviews" every 6 hours into the `visitor-stats` branch,
+# which the sidebar fetches for the cumulative number above the map.
+visitor_map:
+  enabled     : true
+  key         : "nR-5iFkZTXkkjZ3qs3Yrmuf4_L4SWcu25A44DBD0SiA"
+  stats_url   : "https://mapmyvisitors.com/web/1c9ow"
+  ocean_color : "edf3f9"   # map water colour (hex, without #)
+  land_color  : "245b87"   # map land colour
+  text_color  : "245b87"   # pageview counter text
+  # total_json: ""         # optional override; defaults to
+                          # raw.githubusercontent.com/<repo>/visitor-stats/visitor_total.json
 
 # SEO Related
 google_site_verification : tpWkQ5Q0wi29DYeIJZs1X_152NKZ1i-6pUl0fBBL27g
@@ -40,7 +57,7 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           : "yinwen2019"
+  github           : "yinwenok"
   google_plus      :
   keybase          :
   instagram        :
