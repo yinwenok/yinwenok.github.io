@@ -17,11 +17,12 @@
       url: "https://github.com/yinwenok/TiCAL"
   selected: true
   selected_order: 1
-  image: "/images/paper/TiCAL.png"
+  image: "/images/paper/TiCAL-card.webp"
+  image_full: "/images/paper/TiCAL-full.webp"
   image_alt: "Overview of TiCAL's typicality-based consistency-aware learning framework."
   summary: "Combines inter-modal consistency and unimodal typicality for dynamic, multi-stage emotion fusion."
-  image_width: 5580
-  image_height: 2108
+  image_width: 1000
+  image_height: 378
 
 - id: "kcdp"
   authorship: "first-author"
@@ -38,7 +39,7 @@
       url: "https://yinwenok.github.io/ucdver/"
   selected: true
   selected_order: 2
-  image: "/images/paper/kcdp.png"
+  image: "/images/paper/kcdp-card.webp"
   image_alt: "Overview of KCDP's knowledge-aligned counterfactual-enhancement diffusion perception framework."
   summary: "Learns domain-agnostic emotion knowledge through counterfactual enhancement for unsupervised cross-domain recognition."
   image_width: 606

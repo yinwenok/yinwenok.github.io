@@ -9,7 +9,7 @@ My research interests span **affective computing** and **unified multimodal unde
 <section aria-labelledby="academic-background" markdown="1">
 <h2 id="academic-background">Academic background</h2>
 
-I am pursuing a PhD at the Institute for Intelligent Collaborative <span class="intro-affiliation-mark">Computing <img class="intro-logo" src="{{ "/images/LabLogo.png" | relative_url }}" alt="Institute for Intelligent Collaborative Computing"></span>, University of Electronic Science and Technology of China (UESTC, 电子科技大学), under the guidance of [Tao He](https://ht014.github.io/). I also work closely with [Dongyang Zhang](https://zhangdy827.github.io/dyzhang.github.io/) and [Guiduo Duan](https://www.scse.uestc.edu.cn/info/1081/11210.htm). I am currently a research intern at **Tongji University (同济大学)**, working with [Zheng Lian (连政)](https://zeroqiaoba.github.io/Homepage/).
+I am pursuing a PhD at the Institute for Intelligent Collaborative <span class="intro-affiliation-mark">Computing <img class="intro-logo" src="{{ "/images/LabLogo-320.webp" | relative_url }}" alt="Institute for Intelligent Collaborative Computing" width="320" height="76" decoding="async"></span>, University of Electronic Science and Technology of China (UESTC, 电子科技大学), under the guidance of [Tao He](https://ht014.github.io/). I also work closely with [Dongyang Zhang](https://zhangdy827.github.io/dyzhang.github.io/) and [Guiduo Duan](https://www.scse.uestc.edu.cn/info/1081/11210.htm). I am currently a research intern at **Tongji University (同济大学)**, working with [Zheng Lian (连政)](https://zeroqiaoba.github.io/Homepage/).
 
 </section>
 <section aria-labelledby="long-term-goal" markdown="1">

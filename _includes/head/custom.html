@@ -8,6 +8,24 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="stylesheet" href="{{ "/assets/css/academicons.css" | relative_url }}"/>
 
+{%- comment -%} The Google Scholar citation badge lives in the research intro. {%- endcomment -%}
+<link rel="preconnect" href="https://img.shields.io">
+
+{%- comment -%}
+  Warm up the visitor-map origins and start the widget download during the
+  initial page load; the map itself is interactive only after this script and
+  the widget's own jQuery arrive, which is slow from some networks.
+{%- endcomment -%}
+{%- assign vm = site.visitor_map -%}
+{%- if vm.enabled and vm.key and vm.key != "" -%}
+{%- assign vm_ocean = vm.ocean_color | default: "edf3f9" -%}
+{%- assign vm_land = vm.land_color | default: "245b87" -%}
+{%- assign vm_text = vm.text_color | default: "245b87" -%}
+<link rel="preconnect" href="https://mapmyvisitors.com">
+<link rel="preconnect" href="https://code.jquery.com">
+<link rel="preload" as="script" href="https://mapmyvisitors.com/map.js?d={{ vm.key | uri_escape }}&amp;cl={{ vm_land }}&amp;co={{ vm_ocean }}&amp;ct={{ vm_text }}&amp;w=a">
+{%- endif -%}
+
 <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({

@@ -55,26 +55,58 @@
       var link = mount.querySelector("#mapmyvisitors-widget");
       if (!link) return;
       link.setAttribute("aria-label", "Open visitor map statistics");
+      var status = mount.querySelector(".visitor-map__status");
+      if (status) status.remove();
       mapLabel.disconnect();
     });
     mapLabel.observe(mount, { childList: true, subtree: true });
 
-    var loaded = false;
+    // Start immediately (the head preload already opened the connection):
+    // the widget's own jQuery and map script are the slow part on far-away
+    // networks, so waiting for browser idle only delays the map by seconds.
+    var widgetSrc = mount.getAttribute("data-widget-src");
+    var attempt = 0;
+    var MAX_ATTEMPTS = 3;
+
+    var status = document.createElement("p");
+    status.className = "visitor-map__status";
+    status.textContent = "Loading visitor map…";
+    mount.appendChild(status);
+
+    function widgetReady() {
+      return !!mount.querySelector("#mapmyvisitors-widget");
+    }
+
+    // The provider occasionally answers with an overloaded 503 page; because
+    // that page is HTML the browser blocks it as a script and fires onerror,
+    // so retry with backoff instead of leaving the rail blank.
     function loadMap() {
-      if (loaded) return;
-      loaded = true;
+      if (widgetReady()) return;
+      var stale = mount.querySelector("script#mapmyvisitors");
+      if (stale) stale.remove();      // the widget expects exactly one host
       var s = document.createElement("script");
-      s.id = "mapmyvisitors";       // the widget locates its host by this id
+      s.id = "mapmyvisitors";         // the widget locates its host by this id
       s.async = true;
-      s.src = mount.getAttribute("data-widget-src");
+      s.src = attempt ? widgetSrc + "&retry=" + attempt : widgetSrc;
+      s.onerror = function () {
+        if (attempt < MAX_ATTEMPTS) {
+          attempt += 1;
+          setTimeout(loadMap, 4000 * attempt);
+        } else {
+          status.textContent = "Visitor map unavailable";
+        }
+      };
       mount.appendChild(s);
     }
-    // Never let the third-party widget compete with the page's own scripts.
-    if ("requestIdleCallback" in window) {
-      window.requestIdleCallback(loadMap, { timeout: 2500 });
-    } else {
-      window.addEventListener("load", loadMap, { once: true });
-    }
+    loadMap();
+
+    // A script that loads but never paints the widget would otherwise sit on
+    // "Loading…" forever.
+    setTimeout(function () {
+      if (!widgetReady() && status.isConnected) {
+        status.textContent = "Visitor map unavailable";
+      }
+    }, 25000);
   })();
 </script>
 {%- endif -%}

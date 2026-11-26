@@ -277,6 +277,7 @@
 }
 
 .visitor-map {
+  position: relative;
   display: grid;
   place-items: center;
   aspect-ratio: 2.04;
@@ -289,6 +290,21 @@
   .mapmyvisitors-map-container { border-radius: inherit; }
   // Never mix the provider's rolling 30-day statistics with the total.
   .mapmyvisitors-visitors, .mapmyvisitors-date { display: none; }
+}
+
+// Shown while the third-party widget is still downloading; removed as soon as
+// it injects its own markup (or replaced with an error note if it cannot).
+.visitor-map__status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 0 8px;
+  color: var(--profile-muted);
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: center;
 }
 
 .profile-shell .page-viewport:has(> .page--home) { padding-top: 20px; }

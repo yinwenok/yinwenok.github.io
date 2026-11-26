@@ -1,7 +1,7 @@
 {% assign paper = include.paper %}
 <article class="publication{% if include.featured %} publication--featured{% endif %}" id="{% if include.featured %}selected-{% endif %}{{ paper.id }}">
   {% if include.featured and paper.image %}
-  <a class="publication__figure" href="{{ paper.image | relative_url }}" aria-label="Enlarge the {{ paper.short_title | escape }} research figure">
+  <a class="publication__figure" href="{{ paper.image_full | default: paper.image | relative_url }}" aria-label="Enlarge the {{ paper.short_title | escape }} research figure">
     <img src="{{ paper.image | relative_url }}" alt="{{ paper.image_alt | escape }}" width="{{ paper.image_width }}" height="{{ paper.image_height }}" loading="lazy" decoding="async">
   </a>
   {% endif %}
