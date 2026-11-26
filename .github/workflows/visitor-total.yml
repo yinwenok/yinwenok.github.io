@@ -2,7 +2,12 @@ name: Update Visitor Total
 
 # Reads the public MapMyVisitors stats page (the "Total Pageviews" figure) and
 # publishes it to the `visitor-stats` branch, where the profile rail fetches it.
-# Kept off `main` so the daily refresh never adds commits to the site history.
+# Kept off `main` so the refresh never adds commits to the site history.
+#
+# The published number is monotonic: it keeps a running baseline so a provider
+# reset (calendar-year rollover or an accidental wipe) never makes the site's
+# counter go backwards. Scheduled runs are every 6 hours; GitHub can delay them
+# by a few minutes to tens of minutes.
 on:
   workflow_dispatch:
   schedule:
@@ -23,13 +28,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Load previous total
+        run: |
+          git fetch --depth=1 origin visitor-stats || true
+          if git show-ref --verify --quiet refs/remotes/origin/visitor-stats; then
+            git show origin/visitor-stats:visitor_total.json > previous.json || true
+          fi
+          test -s previous.json || echo '{}' > previous.json
+          cat previous.json
+
       - name: Fetch total pageviews
         run: |
           mkdir -p ./visitor_stats
-          cd ./visitor_stats
           python3 - <<'EOF'
           import datetime
           import json
+          import os
           import re
           import urllib.request
 
@@ -43,12 +57,49 @@ jobs:
           match = re.search(r'total-pageviews[^>]*data-value="([\d,]+)"', html)
           if not match:
               raise SystemExit("Total Pageviews not found on the stats page")
+          raw = int(match.group(1).replace(",", ""))
+
+          previous = {}
+          if os.path.exists("previous.json"):
+              try:
+                  with open("previous.json", encoding="utf-8") as fh:
+                      previous = json.load(fh) or {}
+              except ValueError:
+                  previous = {}
+
+          now = datetime.datetime.now(datetime.timezone.utc)
+          this_year = now.year
+
+          baseline = int(previous.get("baseline", 0) or 0)
+          prev_raw = int(previous.get("raw_pageviews", previous.get("total_pageviews", 0)) or 0)
+          prev_total = int(previous.get("total_pageviews", prev_raw) or 0)
+          prev_year = previous.get("year")
+
+          # A drop across a year boundary means the provider restarted its
+          # counter; bank the finished year so the total keeps climbing.
+          year_reset = bool(prev_year) and this_year != prev_year and raw < prev_raw
+          if year_reset:
+              baseline += prev_raw
+              total = baseline + raw
+              reported_raw = raw
+          else:
+              total = baseline + raw
+              reported_raw = raw
+              if raw < prev_raw:
+                  # Same-year regression (reset or bad read): never go backwards.
+                  total = max(total, prev_total)
+                  reported_raw = prev_raw
+
+          total = max(total, prev_total)
 
           payload = {
-              "total_pageviews": int(match.group(1).replace(",", "")),
-              "updated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "total_pageviews": total,
+              "raw_pageviews": reported_raw,
+              "baseline": baseline,
+              "year": this_year,
+              "updated": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
           }
-          with open("visitor_total.json", "w", encoding="utf-8") as fh:
+          with open("visitor_stats/visitor_total.json", "w", encoding="utf-8") as fh:
               json.dump(payload, fh, indent=2)
           print(payload)
           EOF
